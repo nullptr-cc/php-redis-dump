@@ -20,10 +20,12 @@ try {
     die("cannot connect to redis\n");
 };
 
-foreach ($redis->keys('*') as $key) {
-    $ttl = $redis->ttl($key);
-    $value = bin2hex($redis->dump($key));
-    printf("%s %d %s\n", $key, $ttl > 0 ? $ttl : 0, $value);
+$input = fopen('php://stdin', 'r');
+
+while(!feof($input)) {
+    fscanf($input, "%s %d %s\n", $key, $ttl, $value);
+    $redis->restore($key, $ttl, hex2bin($value));
 };
 
 $redis->close();
+
