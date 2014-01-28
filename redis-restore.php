@@ -24,7 +24,7 @@ $input = fopen('php://stdin', 'r');
 
 while(!feof($input)) {
     fscanf($input, "%s %d %s\n", $key, $ttl, $value);
-    $redis->restore($key, $ttl, hex2bin($value));
+    $redis->restore($key, $ttl, pack("H*" , $value));
 };
 
 $redis->close();
