@@ -22,11 +22,10 @@ try {
 
 $input = fopen('php://stdin', 'r');
 
-while(!feof($input)) {
-    fscanf($input, "%s %d %s\n", $key, $ttl, $value);
+while($line = stream_get_line($input, 65535, "\n")) {
+    sscanf($line, "%s %d %s\n", $key, $ttl, $value);
     $redis->del($key);
     $redis->restore($key, $ttl, pack("H*" , $value));
 };
 
 $redis->close();
-
