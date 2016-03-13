@@ -21,7 +21,7 @@ try {
 };
 
 foreach ($redis->keys('*') as $key) {
-    $ttl = $redis->ttl($key);
+    $ttl = $redis->pttl($key);
     $value = bin2hex($redis->dump($key));
     printf("%s %d %s\n", $key, $ttl > 0 ? $ttl : 0, $value);
 };
